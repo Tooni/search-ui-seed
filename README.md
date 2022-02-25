@@ -1,10 +1,8 @@
 Forked from coveo/search-ui-seed
 
-Example solution for up to Stage 4 (Extreme) of the Push API IMDb track of Coveo Power Up Challenge.
+Example solution for up to [Stage 4 (Extreme) of the Push API IMDb track of Coveo Power Up Challenge](https://levelup.coveo.com/learn/courses/power-up-coding-push-api-imdb/lessons/stage4-extreme).
 
-https://levelup.coveo.com/learn/courses/power-up-coding-push-api-imdb/lessons/stage4-extreme
-
-`crawl.py` scrapes and uploads the movie data, using https://github.com/coveo-labs/SDK-Push-Stream-Python
+`crawl.py` scrapes and pushes the movie data, using the [Coveo Push/Stream API SDK for Python](https://github.com/coveo-labs/SDK-Push-Stream-Python)
 
 You'll need to provide your own test org and replace the parts that say `yr_api_key`, `yr_org_id`, and `yr_src_id`.
 
