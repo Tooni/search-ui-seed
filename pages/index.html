@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" >
     <meta name="viewport" content="width=device-width, height=device-height" >
-    <title>Title</title>
+    <title>IMDb Search</title>
     <link rel="stylesheet" href="./css/CoveoFullSearch.css"/>
     <link rel="stylesheet" href="./css/coveoextension.css"/>
     <script src="js/CoveoJsSearch.Lazy.js"></script>
@@ -11,27 +11,49 @@
     <script src="js/templates/templates.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
-        Coveo.SearchEndpoint.configureSampleEndpointV2();
-        Coveo.init(document.body);
+        Coveo.SearchEndpoint.configureCloudV2Endpoint(
+          "yr_org_id",
+          "yr_api_key"
+        );
+        var root = document.querySelector("#search");
+        Coveo.init(root);
       })
+    </script>
+    <script id="basic" class="result-template" type="text/html">
+      <div>
+        <div class="coveo-result-row">
+          <div class="coveo-result-cell">
+            <a class="CoveoResultLink" data-field="@link"></a>
+          </div>
+        </div>
+        <div class="coveo-result-row">
+          <div class="coveo-result-cell">
+            <span class="CoveoImageFieldValue"
+              data-width="80"
+              data-field="@image"
+              data-helper="image"></span>
+          </div>
+        </div>
+      </div>
     </script>
   </head>
   <body id="search" class='CoveoSearchInterface' data-enable-history="true">
-    <div class="CoveoHelloWorld"></div>
+    <div class="CoveoFoldingForThread"></div>
     <div class="coveo-tab-section">
-      <a class="CoveoTab" data-id="All" data-caption="All Content"></a>
+      <a class="CoveoTab" data-id="All" data-caption="Movies from IMDb"></a>
     </div>
     <div class='coveo-search-section'>
       <div class="CoveoSettings"></div>
       <div class="CoveoSearchbox" data-enable-omnibox="true"></div>
+      <div class="CoveoFieldSuggestions" data-field="@title"></div>
     </div>
     <div class="coveo-main-section">
       <div class="coveo-facet-column">
-        <div class="CoveoFacet" data-title="Type" data-field="@objecttype" data-tab="All"></div>
-        <div class="CoveoFacet" data-title="FileType" data-field="@filetype" data-tab="All"></div>
-        <div class="CoveoFacet" data-title="Author" data-field="@author" data-tab="All"></div>
-        <div class="CoveoFacet" data-title="Year" data-field="@year" data-tab="All"></div>
-        <div class="CoveoFacet" data-title="Month" data-field="@month" data-tab="All"></div>
+        <div class="CoveoFacet" data-title="Year" data-field="@yearreleased" data-tab="All"></div>
+        <div class="CoveoFacet" data-title="Genre" data-field="@genres" data-enable-toggling-operator='true' data-tab="All"></div>
+        <div class="CoveoFacet" data-title="Country" data-field="@countries" data-enable-toggling-operator='true' data-tab="All"></div>
+        <div class="CoveoFacetSlider" data-title="Runtime" data-field="@duration" data-range-slider='true' data-tab="All"></div>
+        <div class="CoveoFacetSlider" data-title="Release date" data-field="@datepublished" data-range-slider='true' data-date-field='true' data-tab="All"></div>
       </div>
       <div class="coveo-results-column">
         <div class="CoveoShareQuery"></div>
@@ -51,13 +73,81 @@
           </div>
           <div class="coveo-sort-section">
             <span class="CoveoSort" data-sort-criteria="relevancy" data-caption="Relevance"></span>
-            <span class="CoveoSort" data-sort-criteria="date descending,date ascending" data-caption="Date"></span>
+            <span class="CoveoSort" data-sort-criteria="@datepublished descending,@datepublished ascending" data-caption="Date"></span>
           </div>
         </div>
         <div class="CoveoHiddenQuery"></div>
         <div class="CoveoDidYouMean"></div>
         <div class="CoveoErrorReport"></div>
-        <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+        <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true">
+          <script id="myListTemplate" class="result-template"
+                  type="text/html" data-layout="list">
+            <div class="coveo-result-frame">
+              <div class="coveo-result-cell">
+                <span class="CoveoImageFieldValue"
+                  data-width="140"
+                  data-field="@image"
+                  data-helper="image"></span>
+                <div class="CoveoQuickview"></div>
+              </div>
+              <div class="coveo-result-cell" style="padding-left:20px;">
+                <div class="coveo-result-row"
+                      style="margin-top:0;">
+                  <div class="coveo-result-cell">
+                    <a class="CoveoResultLink" data-field="@link"></a>
+                  </div>
+                  <div class="coveo-result-cell">
+                    <div class="coveo-result-row">
+                      <span class="CoveoFieldValue"
+                            data-field="@yearreleased"
+                            data-helper="yearreleased"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="coveo-result-row"
+                      style="margin-top:10px;">
+                  <div class="coveo-result-cell">
+                    <span class="CoveoFieldValue"
+                          data-field="@description"
+                          data-text-caption="Description"
+                          style="margin-right:30px;"></span>
+                  </div>
+                </div>
+                <div class="coveo-result-row"
+                      style="margin-top:10px;">
+                  <div class="coveo-result-cell">
+                    <span class="CoveoFieldValue"
+                          data-field="@director"
+                          data-text-caption="Director"
+                          style="margin-right:30px;"></span>
+                    <span class="CoveoFieldValue"
+                          data-field="@language"
+                          data-text-caption="Language"
+                          style="margin-right:30px;"></span>
+                    <span class="CoveoFieldValue"
+                          data-field="@duration"
+                          data-text-caption="Duration"
+                          style="margin-right:30px;"></span>
+                  </div>
+                </div>
+                <div class="coveo-result-row"
+                      style="margin-top:10px;">
+                  <div class="coveo-result-cell">
+                    <div class="CoveoPrintableUri"></div>
+                  </div>
+                </div>
+                <div class="coveo-result-row">
+                  <div class="coveo-result-cell">
+                    <div class="CoveoMissingTerms"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="coveo-result-cell" style="padding-left:20px; width:20%">
+                <span class="CoveoResultFolding" data-result-template-id="basic"></span>
+              </div>
+            </div>
+          </script>
+        </div>
         <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
         <div class="CoveoPager"></div>
         <div class="CoveoLogo"></div>
